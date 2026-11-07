@@ -1,0 +1,43 @@
+# A könyv magyar fordításának build-konfigurációja.
+#
+# Használat a repó gyökeréből:
+#
+#     mdbook build hu       # kimenet: hu/book/
+#     mdbook serve hu       # élő előnézet
+#
+# A forrás a `src-hu/` mappa; az angol `src/` és a gyökérben lévő `book.toml`
+# érintetlen marad, hogy az upstream (rust-lang/book) szinkron konfliktusmentes
+# legyen. Az elérési utak ehhez a mappához (`hu/`) képest relatívak.
+
+[book]
+title = "A Rust programozási nyelv"
+authors = ["Steve Klabnik", "Carol Nichols", "Chris Krycho", "a Rust közösség közreműködésével"]
+language = "hu"
+src = "../src-hu"
+
+[output.html]
+# A ferris.css, a ferris.js és a theme/ szimbolikus linkek a gyökérben lévő
+# eredetikre: az mdbook csak a saját gyökerén (hu/) belüli fájlokat másolja
+# helyesen a kimenetbe.
+additional-css = ["ferris.css", "theme/2018-edition.css", "theme/semantic-notes.css", "theme/listing.css"]
+additional-js = ["ferris.js"]
+git-repository-url = "https://github.com/seralaci/rust-lang-book-hu"
+
+[output.html.search]
+use-boolean-and = true
+
+[preprocessor.trpl-note]
+command = "cargo run --quiet --manifest-path ../packages/mdbook-trpl/Cargo.toml --bin mdbook-trpl-note"
+note-prefix = "Megjegyzés: "
+
+[preprocessor.trpl-listing]
+command = "cargo run --quiet --manifest-path ../packages/mdbook-trpl/Cargo.toml --bin mdbook-trpl-listing"
+output-mode = "default"
+listing-label = "{number}. kódrészlet"
+file-name-label = "Fájlnév"
+
+[rust]
+edition = "2024"
+
+[build]
+extra-watch-dirs = ["../packages/mdbook-trpl"]

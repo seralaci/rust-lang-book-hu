@@ -294,3 +294,43 @@ fn main() {}
         )
     }
 }
+
+#[test]
+fn custom_labels() {
+    let labels = Labels {
+        listing_label: String::from("{number}. kódrészlet"),
+        file_name_label: String::from("Fájlnév"),
+        ..Labels::default()
+    };
+    let result = rewrite_listing_with(
+        r#"<Listing number="1-2" file-name="src/main.rs" caption="Egy példa">
+
+```rust
+fn main() {}
+```
+
+</Listing>"#,
+        Mode::Default,
+        &labels,
+    );
+
+    assert_eq!(
+        &result.unwrap(),
+        r##"<figure class="listing" id="listing-1-2">
+<span class="file-name">Fájlnév: src/main.rs</span>
+
+````rust
+fn main() {}
+````
+
+<figcaption><a href="#listing-1-2">1-2. kódrészlet</a>: Egy példa</figcaption>
+</figure>"##
+    );
+
+    let simple = rewrite_listing_with(
+        "<Listing number=\"1-2\" caption=\"Egy példa\">\n\ncode\n\n</Listing>",
+        Mode::Simple,
+        &labels,
+    );
+    assert_eq!(&simple.unwrap(), "\ncode\n\n1-2. kódrészlet: Egy példa");
+}

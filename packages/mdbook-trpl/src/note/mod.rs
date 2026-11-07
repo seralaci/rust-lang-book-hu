@@ -9,6 +9,8 @@ use pulldown_cmark::{
 };
 use pulldown_cmark_to_cmark::cmark;
 
+use crate::config::Labels;
+
 /// A simple preprocessor for semantic notes in _The Rust Programming Language_.
 ///
 /// Takes in Markdown like this:
@@ -33,10 +35,12 @@ impl Preprocessor for TrplNote {
         "trpl-note"
     }
 
-    fn run(&self, _ctx: &PreprocessorContext, mut book: Book) -> Result<Book> {
+    fn run(&self, ctx: &PreprocessorContext, mut book: Book) -> Result<Book> {
+        let labels = Labels::from_context(ctx, self.name())?;
         book.for_each_mut(|item| {
             if let BookItem::Chapter(ref mut chapter) = item {
-                chapter.content = rewrite(&chapter.content);
+                chapter.content =
+                    rewrite_with(&chapter.content, &labels.note_prefix);
             }
         });
         Ok(book)
@@ -47,7 +51,12 @@ impl Preprocessor for TrplNote {
     }
 }
 
+#[cfg(test)]
 pub fn rewrite(text: &str) -> String {
+    rewrite_with(text, &Labels::default().note_prefix)
+}
+
+pub fn rewrite_with(text: &str, note_prefix: &str) -> String {
     let parser = crate::parser(text);
 
     let mut events = Vec::new();
@@ -60,7 +69,7 @@ pub fn rewrite(text: &str) -> String {
             }
 
             (StartingBlockquote(blockquote_events), Text(content)) => {
-                if content.starts_with("Note: ") {
+                if content.starts_with(note_prefix) {
                     // This needs the "extra" `SoftBreak`s so that when the final rendering pass
                     // happens, it does not end up treating the internal content as inline *or*
                     // treating the HTML tags as inline tags:

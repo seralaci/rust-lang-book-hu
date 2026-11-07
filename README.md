@@ -1,107 +1,89 @@
-# The Rust Programming Language
+# A Rust programozási nyelv – magyar fordítás
 
-![Build Status](https://github.com/rust-lang/book/workflows/CI/badge.svg)
+[![Magyar könyv publikálása](https://github.com/seralaci/rust-lang-book-hu/actions/workflows/hu-pages.yml/badge.svg)](https://github.com/seralaci/rust-lang-book-hu/actions/workflows/hu-pages.yml)
 
-This repository contains the source of "The Rust Programming Language" book.
+Ez a repó a [*The Rust Programming Language*][original] (közismert nevén „a
+Rust könyv”) magyar fordítását tartalmazza. A [rust-lang/book][upstream] repó
+forkja; az angol eredetit folyamatosan követjük.
 
-[The book is available in dead-tree form from No Starch Press][nostarch].
+**📖 A könyv online olvasható: <https://seralaci.github.io/rust-lang-book-hu/>**
 
-[nostarch]: https://nostarch.com/rust-programming-language-2nd-edition
+[original]: https://doc.rust-lang.org/stable/book/
+[upstream]: https://github.com/rust-lang/book
 
-You can also read the book for free online. Please see the book as shipped with
-the latest [stable], [beta], or [nightly] Rust releases. Be aware that issues
-in those versions may have been fixed in this repository already, as those
-releases are updated less frequently.
+## Állapot
 
-[stable]: https://doc.rust-lang.org/stable/book/
-[beta]: https://doc.rust-lang.org/beta/book/
-[nightly]: https://doc.rust-lang.org/nightly/book/
+A könyv teljes szövege le van fordítva: a címoldal, az előszó, a bevezetés,
+mind a 21 fejezet és az A–G. függelék. A fordítás lektorálása folyamatban van –
+ha hibát, pontatlanságot vagy döcögős mondatot találsz, kérjük, jelezd!
 
-See the [releases] to download just the code of all the code listings that appear in the book.
+| Rész                                         | Állapot                   |
+| -------------------------------------------- | ------------------------- |
+| Címoldal, előszó, bevezetés, tartalomjegyzék | ✅ lefordítva             |
+| 1–21. fejezet                                | ✅ lefordítva             |
+| Függelékek (A–G)                             | ✅ lefordítva             |
+| Lektorálás                                   | ⏳ folyamatban            |
+| Kódpéldák kommentjei (`listings/`)           | 🇬🇧 egyelőre angolul      |
 
-[releases]: https://github.com/rust-lang/book/releases
+A fordítás a Rust 1.99.1-es verziójához és a 2024-es kiadáshoz (edition)
+készült könyvváltozatot követi; a pontos upstream commitot a
+[`hu/UPSTREAM`](hu/UPSTREAM) fájl rögzíti.
 
-## Requirements
+## A repó felépítése
 
-Building the book requires [mdBook], ideally the same version that
-rust-lang/rust uses in [this file][rust-mdbook]. To get it:
+| Hely                    | Tartalom                                                         |
+| ----------------------- | ---------------------------------------------------------------- |
+| `src-hu/`               | A magyar fordítás (Markdown).                                    |
+| `hu/`                   | A magyar könyv build-konfigurációja és az ellenőrző szkript.     |
+| `FORDITAS.md`           | Fordítási útmutató, stílusszabályok és szójegyzék.               |
+| `src/`, `listings/`     | Az angol eredeti és a kódpéldák – ezeket nem módosítjuk.         |
 
+Az angol forrás érintetlenül marad, így az upstream változásai konfliktus
+nélkül behúzhatók, és pontosan látszik, mit kell a fordításban frissíteni.
+
+## Buildelés
+
+Szükséges hozzá a [Rust] és az [mdBook] (a CI-val azonos 0.5.1-es verzió):
+
+```console
+$ cargo install mdbook --locked --version 0.5.1
+```
+
+A repó gyökeréből:
+
+```console
+$ mdbook serve hu --open    # élő előnézet: http://localhost:3000
+$ mdbook build hu           # statikus build: hu/book/
+$ python3 hu/ellenorzes.py  # a fordítás ellenőrzése (build után)
+```
+
+A `main` ágra pusholt változásokat a [`hu-pages.yml`](.github/workflows/hu-pages.yml)
+GitHub Actions workflow automatikusan buildeli és publikálja GitHub Pagesre.
+
+[Rust]: https://www.rust-lang.org/tools/install
 [mdBook]: https://github.com/rust-lang/mdBook
-[rust-mdbook]: https://github.com/rust-lang/rust/blob/HEAD/src/tools/rustbook/Cargo.toml
 
-```bash
-$ cargo install mdbook --locked --version <version_num>
-```
+## Közreműködés
 
-## Building
+Örülünk minden segítségnek – új fejezet fordításának, javításnak, lektorálásnak!
+Mielőtt nekikezdesz, olvasd el a [fordítási útmutatót](FORDITAS.md): ebben
+vannak a stílusszabályok, a kötelező szakszavak szójegyzéke és az upstream
+szinkron menete.
 
-To build the book, type:
+- Hibát találtál a fordításban? Nyiss egy [issue-t][issues], vagy küldj pull
+  requestet.
+- Az angol eredeti tartalmi hibáit az [eredeti repóban][upstream] jelezd.
 
-```bash
-$ mdbook build
-```
+[issues]: https://github.com/seralaci/rust-lang-book-hu/issues
 
-The output will be in the `book` subdirectory. To check it out, open it in
-your web browser.
+## Licenc
 
-_Firefox:_
+Az eredeti könyvhöz hasonlóan a fordítás is az MIT és az Apache 2.0 licenc
+alatt érhető el, választásod szerint. Részletek: [LICENSE-MIT](LICENSE-MIT),
+[LICENSE-APACHE](LICENSE-APACHE), [COPYRIGHT](COPYRIGHT).
 
-```bash
-$ firefox book/index.html                       # Linux
-$ open -a "Firefox" book/index.html             # OS X
-$ Start-Process "firefox.exe" .\book\index.html # Windows (PowerShell)
-$ start firefox.exe .\book\index.html           # Windows (Cmd)
-```
+Az eredeti könyv szerzői Steve Klabnik, Carol Nichols és Chris Krycho, a Rust
+közösség közreműködésével. A könyv nyomtatott változata a [No Starch
+Press][nostarch] kiadásában jelent meg.
 
-_Chrome:_
-
-```bash
-$ google-chrome book/index.html                 # Linux
-$ open -a "Google Chrome" book/index.html       # OS X
-$ Start-Process "chrome.exe" .\book\index.html  # Windows (PowerShell)
-$ start chrome.exe .\book\index.html            # Windows (Cmd)
-```
-
-To run the tests:
-
-```bash
-$ cd packages/trpl
-$ mdbook test --library-path packages/trpl/target/debug/deps
-```
-
-## Contributing
-
-We'd love your help! Please see [CONTRIBUTING.md][contrib] to learn about the
-kinds of contributions we're looking for.
-
-[contrib]: https://github.com/rust-lang/book/blob/main/CONTRIBUTING.md
-
-Because the book is [printed][nostarch], and because we want
-to keep the online version of the book close to the print version when
-possible, it may take longer than you're used to for us to address your issue
-or pull request.
-
-So far, we've been doing a larger revision to coincide with [Rust Editions](https://doc.rust-lang.org/edition-guide/). Between those larger
-revisions, we will only be correcting errors. If your issue or pull request
-isn't strictly fixing an error, it might sit until the next time that we're
-working on a large revision: expect on the order of months or years. Thank you
-for your patience!
-
-### Translations
-
-We'd love help translating the book! See the [Translations] label to join in
-efforts that are currently in progress. Open a new issue to start working on
-a new language! We're waiting on [mdbook support] for multiple languages
-before we merge any in, but feel free to start!
-
-[Translations]: https://github.com/rust-lang/book/issues?q=is%3Aopen+is%3Aissue+label%3ATranslations
-[mdbook support]: https://github.com/rust-lang/mdBook/issues/5
-
-## Spellchecking
-
-To scan source files for spelling errors, you can use the `spellcheck.sh`
-script available in the `ci` directory. It needs a dictionary of valid words,
-which is provided in `ci/dictionary.txt`. If the script produces a false
-positive (say, you used the word `BTreeMap` which the script considers invalid),
-you need to add this word to `ci/dictionary.txt` (keep the sorted order for
-consistency).
+[nostarch]: https://nostarch.com/rust-programming-language-3rd-edition

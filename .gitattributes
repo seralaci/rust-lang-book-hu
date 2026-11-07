@@ -4,3 +4,7 @@
 *.odt binary
 *.png binary
 
+
+# Magyar fork: a README.md-t átírtuk, upstream merge-nél mindig a miénk marad.
+# Egyszeri beállítás klónozás után: git config merge.ours.driver true
+README.md merge=ours

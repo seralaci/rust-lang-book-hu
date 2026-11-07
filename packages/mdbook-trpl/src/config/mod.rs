@@ -30,6 +30,54 @@ impl Mode {
     }
 }
 
+/// User-visible labels emitted by the preprocessors, configurable so that
+/// translations of the book can localize them. The defaults are English.
+///
+/// ```toml
+/// [preprocessor.trpl-listing]
+/// listing-label = "{number}. kódrészlet"
+/// file-name-label = "Fájlnév"
+///
+/// [preprocessor.trpl-note]
+/// note-prefix = "Megjegyzés: "
+/// ```
+#[derive(Debug, Clone, PartialEq, serde::Deserialize)]
+#[serde(rename_all = "kebab-case", default)]
+pub struct Labels {
+    /// Template for a listing label; `{number}` is replaced by the number.
+    pub listing_label: String,
+    /// Label shown before a listing's file name.
+    pub file_name_label: String,
+    /// Prefix which marks a blockquote as a semantic note.
+    pub note_prefix: String,
+}
+
+impl Default for Labels {
+    fn default() -> Self {
+        Labels {
+            listing_label: String::from("Listing {number}"),
+            file_name_label: String::from("Filename"),
+            note_prefix: String::from("Note: "),
+        }
+    }
+}
+
+impl Labels {
+    pub fn from_context(
+        ctx: &PreprocessorContext,
+        preprocessor_name: &str,
+    ) -> Result<Labels, Error> {
+        Ok(ctx
+            .config
+            .get(&format!("preprocessor.{preprocessor_name}"))?
+            .unwrap_or_default())
+    }
+
+    pub fn listing(&self, number: &str) -> String {
+        self.listing_label.replace("{number}", number)
+    }
+}
+
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error(transparent)]

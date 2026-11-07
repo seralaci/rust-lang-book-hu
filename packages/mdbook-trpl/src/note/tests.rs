@@ -193,3 +193,13 @@ fn render_markdown(text: &str) -> String {
     pulldown_cmark::html::push_html(&mut buf, parser);
     buf
 }
+
+#[test]
+fn with_custom_note_prefix() {
+    let text = "> Megjegyzés: Ez egy megjegyzés.";
+    let processed = rewrite_with(text, "Megjegyzés: ");
+    assert_eq!(
+        render_markdown(&processed),
+        "<section class=\"note\" aria-role=\"note\">\n<p>Megjegyzés: Ez egy megjegyzés.</p>\n</section>"
+    );
+}

@@ -8,7 +8,10 @@ use mdbook_preprocessor::{
 use pulldown_cmark::{html, Event};
 use pulldown_cmark_to_cmark::cmark;
 
-use crate::{config::Mode, CompositeError};
+use crate::{
+    config::{Labels, Mode},
+    CompositeError,
+};
 
 /// A preprocessor for rendering listings more elegantly.
 ///
@@ -61,11 +64,12 @@ impl Preprocessor for TrplListing {
 
     fn run(&self, ctx: &PreprocessorContext, mut book: Book) -> Result<Book> {
         let mode = Mode::from_context(ctx, self.name())?;
+        let labels = Labels::from_context(ctx, self.name())?;
 
         let mut errors = vec![];
         book.for_each_mut(|item| {
             if let BookItem::Chapter(ref mut chapter) = item {
-                match rewrite_listing(&chapter.content, mode) {
+                match rewrite_listing_with(&chapter.content, mode, &labels) {
                     Ok(rewritten) => chapter.content = rewritten,
                     Err(reason) => errors.push(anyhow!(reason)),
                 }
@@ -84,13 +88,23 @@ impl Preprocessor for TrplListing {
     }
 }
 
+#[cfg(test)]
 fn rewrite_listing(src: &str, mode: Mode) -> Result<String, String> {
+    rewrite_listing_with(src, mode, &Labels::default())
+}
+
+fn rewrite_listing_with(
+    src: &str,
+    mode: Mode,
+    labels: &Labels,
+) -> Result<String, String> {
     match mode {
         Mode::Default => {
             let final_state = crate::parser(src).try_fold(
                 RewriteState {
                     current: None,
                     events: vec![],
+                    labels,
                 },
                 |mut state, ev| -> Result<RewriteState, String> {
                     match ev {
@@ -137,8 +151,8 @@ fn rewrite_listing(src: &str, mode: Mode) -> Result<String, String> {
             let mut current_closing = None;
             for line in src.lines() {
                 if line.starts_with("<Listing") && (line.ends_with(">")) {
-                    let listing =
-                        ListingBuilder::from_tag(&line)?.build(Mode::Simple);
+                    let listing = ListingBuilder::from_tag(&line)?
+                        .build(Mode::Simple, labels);
                     rewritten.push_str(&listing.opening_text());
                     current_closing = Some(listing.closing_text("\n"));
                 } else if line == "</Listing>" {
@@ -168,18 +182,19 @@ fn rewrite_listing(src: &str, mode: Mode) -> Result<String, String> {
     }
 }
 
-struct RewriteState<'e> {
+struct RewriteState<'e, 'l> {
     current: Option<Listing>,
     events: Vec<Result<Event<'e>, String>>,
+    labels: &'l Labels,
 }
 
-impl<'e> RewriteState<'e> {
+impl<'e, 'l> RewriteState<'e, 'l> {
     fn open_listing(
         &mut self,
         tag: pulldown_cmark::CowStr<'_>,
         mode: Mode,
     ) -> Result<(), String> {
-        let listing = ListingBuilder::from_tag(&tag)?.build(mode);
+        let listing = ListingBuilder::from_tag(&tag)?.build(mode, self.labels);
         let opening_event = Event::Html(listing.opening_html().into());
 
         self.current = Some(listing);
@@ -216,6 +231,7 @@ struct Listing {
     number: Option<String>,
     caption: Option<String>,
     file_name: Option<String>,
+    labels: Labels,
 }
 
 impl Listing {
@@ -230,7 +246,8 @@ impl Listing {
 
         match self.file_name.as_ref() {
             Some(file_name) => format!(
-                "{figure}<span class=\"file-name\">Filename: {file_name}</span>\n",
+                "{figure}<span class=\"file-name\">{label}: {file_name}</span>\n",
+                label = self.labels.file_name_label,
             ),
             None => figure,
         }
@@ -244,7 +261,8 @@ impl Listing {
                     .map(|caption| format!(": {}", caption))
                     .unwrap_or_default();
                 let listing_a_tag = format!(
-                    "<a href=\"#listing-{number}\">Listing {number}</a>"
+                    "<a href=\"#listing-{number}\">{}</a>",
+                    self.labels.listing(number)
                 );
                 format!(
                     r#"<figcaption>{listing_a_tag}{caption_text}</figcaption>
@@ -269,10 +287,12 @@ impl Listing {
     fn closing_text(&self, trailing: &str) -> String {
         match (&self.number, &self.caption) {
             (Some(number), Some(caption)) => {
-                format!("Listing {number}: {caption}{trailing}")
+                format!("{}: {caption}{trailing}", self.labels.listing(number))
             }
             (None, Some(caption)) => format!("{caption}{trailing}"),
-            (Some(number), None) => format!("Listing {number}{trailing}"),
+            (Some(number), None) => {
+                format!("{}{trailing}", self.labels.listing(number))
+            }
             (None, None) => trailing.into(),
         }
     }
@@ -345,7 +365,7 @@ impl ListingBuilder {
         self
     }
 
-    fn build(self, mode: Mode) -> Listing {
+    fn build(self, mode: Mode, labels: &Labels) -> Listing {
         let caption = match mode {
             Mode::Default => self.caption.map(|caption_source| {
                 let events = crate::parser(&caption_source);
@@ -364,6 +384,7 @@ impl ListingBuilder {
             number: self.number.map(String::from),
             caption,
             file_name: self.file_name.map(String::from),
+            labels: labels.clone(),
         }
     }
 }
