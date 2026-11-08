@@ -156,8 +156,14 @@ def main(prefixes):
         text = open(f).read()
         defs = dict(re.findall(r"^\[([^\]]+)\]:\s*(\S+)", text, re.M))
         for ref, target in defs.items():
-            # a ../std/ stb. linkek a könyvön kívüli dokumentációra mutatnak
-            if target.startswith(("http", "../")) or "#" not in target:
+            # Az angol könyv a doc.rust-lang.org-on fut, ott a ../std/ stb.
+            # relatív linkek működnek; nálunk abszolút cím kell.
+            if target.startswith("../"):
+                print(f"{f}: relatív külső link, írd át https://doc.rust-lang.org/ "
+                      f"kezdetűre: [{ref}]: {target}")
+                problems += 1
+                continue
+            if target.startswith("http") or "#" not in target:
                 continue
             page, anchor = target.split("#", 1)
             page = page or os.path.basename(f)[:-3] + ".html"

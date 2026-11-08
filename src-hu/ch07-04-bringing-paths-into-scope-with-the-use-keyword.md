@@ -324,7 +324,7 @@ elemet a `tests` modulba hozzanak; erről a 11. fejezet [„Hogyan írjunk
 teszteket?”][writing-tests]<!-- ignore --> szakaszában lesz szó. A glob
 operátort néha a prelude minta részeként is használják: erről a mintáról
 bővebben
-[a standard könyvtár dokumentációjában](../std/prelude/index.html#other-preludes)<!-- ignore -->
+[a standard könyvtár dokumentációjában](https://doc.rust-lang.org/std/prelude/index.html#other-preludes)<!-- ignore -->
 olvashatsz.
 
 [ch14-pub-use]: ch14-02-publishing-to-crates-io.html#exporting-a-convenient-public-api

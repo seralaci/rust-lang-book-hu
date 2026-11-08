@@ -108,4 +108,4 @@ amelytől félni kellene: vágj bele, és tedd a programjaidat konkurenssé,
 félelem nélkül!
 
 [shared-access]: ch16-03-shared-state.html#shared-access-to-mutext
-[nomicon]: ../nomicon/index.html
+[nomicon]: https://doc.rust-lang.org/nomicon/index.html

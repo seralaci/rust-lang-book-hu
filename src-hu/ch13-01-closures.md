@@ -444,4 +444,4 @@ típusokat definiálunk vagy használunk. A következő részben az iterátorokr
 lesz szó. Sok iterátormetódus closure-argumentumokat vár, ezért a továbbiakban
 is tartsd észben a closure-ök ezen részleteit!
 
-[unwrap-or-else]: ../std/option/enum.Option.html#method.unwrap_or_else
+[unwrap-or-else]: https://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap_or_else

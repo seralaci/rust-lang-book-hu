@@ -271,4 +271,4 @@ típusának API-dokumentációja hasznos információkat tartalmaz.
 A fejezetet a `Send` és a `Sync` trait tárgyalásával zárjuk, és azzal, hogyan
 használhatjuk őket saját típusokkal.
 
-[atomic]: ../std/sync/atomic/index.html
+[atomic]: https://doc.rust-lang.org/std/sync/atomic/index.html

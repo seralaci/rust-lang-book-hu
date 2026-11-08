@@ -333,4 +333,4 @@ Rustonomicon”][nomicon] című könyvet.
 A következő fejezetben a Rust konkurenciakezeléséről lesz szó. Néhány új okos
 mutatóval is megismerkedsz majd.
 
-[nomicon]: ../nomicon/index.html
+[nomicon]: https://doc.rust-lang.org/nomicon/index.html

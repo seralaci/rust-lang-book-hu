@@ -536,7 +536,7 @@ kézikönyvként, amely a megoldások felé vezet.
 Következő lépésként mindazt, amiről a könyvben szó volt, a gyakorlatba
 ültetjük, és elkészítünk még egy projektet!
 
-[ref]: ../reference/macros-by-example.html
+[ref]: https://doc.rust-lang.org/reference/macros-by-example.html
 [tlborm]: https://veykril.github.io/tlborm/
 [syn]: https://crates.io/crates/syn
 [quote]: https://crates.io/crates/quote

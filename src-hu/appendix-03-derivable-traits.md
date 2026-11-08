@@ -17,7 +17,7 @@ tárgyalja:
 
 Ha a `derive` attribútum által biztosítottól eltérő viselkedést szeretnél,
 a traitek kézi megvalósításának részleteiről az egyes traitek [standard
-könyvtárbeli dokumentációjában](../std/index.html)<!-- ignore --> olvashatsz.
+könyvtárbeli dokumentációjában](https://doc.rust-lang.org/std/index.html)<!-- ignore --> olvashatsz.
 
 Az itt felsorolt traitek az egyetlenek a standard könyvtárban definiáltak
 közül, amelyek a `derive` segítségével megvalósíthatók a saját típusaidon. A

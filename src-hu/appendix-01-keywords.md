@@ -64,7 +64,7 @@ Az alábbi lista a jelenleg használt kulcsszavakat és azok szerepét mutatja b
 - **`where`**: egy típust korlátozó záradékok jelölése.
 - **`while`**: feltételes ciklus egy kifejezés eredménye alapján.
 
-[union]: ../reference/items/unions.html
+[union]: https://doc.rust-lang.org/reference/items/unions.html
 
 ### Jövőbeli használatra fenntartott kulcsszavak {#keywords-reserved-for-future-use}
 

@@ -25,4 +25,4 @@ A standard könyvtár által biztosított többi gyűjteményfajtáról
 Megnézzük, hogyan hozhatunk létre és frissíthetünk vektorokat, sztringeket és
 hasítótáblákat, valamint azt is, mitől különleges mindegyik.
 
-[collections]: ../std/collections/index.html
+[collections]: https://doc.rust-lang.org/std/collections/index.html

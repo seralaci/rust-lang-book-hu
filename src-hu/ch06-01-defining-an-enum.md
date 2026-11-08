@@ -330,6 +330,6 @@ amely enumokkal használva pontosan ezt teszi: attól függően futtat különb�
 kódot, hogy az enum melyik változatát kapja, és ez a kód használhatja az
 illeszkedő értékben lévő adatokat.
 
-[IpAddr]: ../std/net/enum.IpAddr.html
-[option]: ../std/option/enum.Option.html
-[docs]: ../std/option/enum.Option.html
+[IpAddr]: https://doc.rust-lang.org/std/net/enum.IpAddr.html
+[option]: https://doc.rust-lang.org/std/option/enum.Option.html
+[docs]: https://doc.rust-lang.org/std/option/enum.Option.html

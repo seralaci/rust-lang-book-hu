@@ -60,7 +60,10 @@ fordítás bármely állapotában buildelhető.
 - kódot, kódkommentet, konzolkimenetet, fordítói hibaüzenetet (sem a
   `listings/`-ben, sem a markdownba ágyazott kódblokkokban);
 - a `{{#include …}}`, `{{#rustdoc_include …}}` direktívákat;
-- a linkdefiníciókat (`[ch20-macros]: ch20-05-macros.html`) és URL-eket;
+- a linkdefiníciókat (`[ch20-macros]: ch20-05-macros.html`) és URL-eket –
+  **egy kivétellel**: a `../std/…`, `../reference/…` stb. relatív linkek az
+  angol könyvben a doc.rust-lang.org-on belül működnek, nálunk viszont nem,
+  ezért ezeket `https://doc.rust-lang.org/std/…` alakra írjuk át;
 - a `<!-- ignore -->` jelöléseket és a karbantartóknak szóló HTML-kommenteket
   (pl. `<!-- Old headings. Do not remove or links may break. -->`);
 - a `<a id="…"></a>` horgonyokat;

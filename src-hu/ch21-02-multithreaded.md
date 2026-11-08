@@ -765,5 +765,5 @@ kaphat feladatokat.
 [type-aliases]: ch20-03-advanced-types.html#type-synonyms-and-type-aliases
 [integer-types]: ch03-02-data-types.html#integer-types
 [moving-out-of-closures]: ch13-01-closures.html#moving-captured-values-out-of-closures
-[builder]: ../std/thread/struct.Builder.html
-[builder-spawn]: ../std/thread/struct.Builder.html#method.spawn
+[builder]: https://doc.rust-lang.org/std/thread/struct.Builder.html
+[builder-spawn]: https://doc.rust-lang.org/std/thread/struct.Builder.html#method.spawn

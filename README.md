@@ -13,18 +13,6 @@ forkja; az angol eredetit folyamatosan követjük.
 
 ## Állapot
 
-A könyv teljes szövege le van fordítva: a címoldal, az előszó, a bevezetés,
-mind a 21 fejezet és az A–G. függelék. A fordítás lektorálása folyamatban van –
-ha hibát, pontatlanságot vagy döcögős mondatot találsz, kérjük, jelezd!
-
-| Rész                                         | Állapot                   |
-| -------------------------------------------- | ------------------------- |
-| Címoldal, előszó, bevezetés, tartalomjegyzék | ✅ lefordítva             |
-| 1–21. fejezet                                | ✅ lefordítva             |
-| Függelékek (A–G)                             | ✅ lefordítva             |
-| Lektorálás                                   | ⏳ folyamatban            |
-| Kódpéldák kommentjei (`listings/`)           | 🇬🇧 egyelőre angolul      |
-
 A fordítás a Rust 1.99.1-es verziójához és a 2024-es kiadáshoz (edition)
 készült könyvváltozatot követi; a pontos upstream commitot a
 [`hu/UPSTREAM`](hu/UPSTREAM) fájl rögzíti.
